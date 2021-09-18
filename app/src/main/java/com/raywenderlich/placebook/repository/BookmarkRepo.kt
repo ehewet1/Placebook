@@ -21,7 +21,7 @@ class BookmarkRepo(context: Context){
     }
 
     val allBookmarks: LiveData<List<Bookmark>>
-        get(){
+        get() {
             return bookmarkDao.loadAll()
         }
 }
