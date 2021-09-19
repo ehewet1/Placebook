@@ -2,6 +2,7 @@ package com.raywenderlich.placebook.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
@@ -142,6 +143,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .snippet(place.phoneNumber)
         )
         marker?.tag=PlaceInfo(place,photo)
+        marker?.showInfoWindow()
     }
 
     @SuppressLint("MissingSuperCall")
@@ -164,13 +166,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun handleInfoWindowClick(marker: Marker){
-        val placeInfo=(marker.tag as PlaceInfo)
-        if (placeInfo.place!=null){
-            GlobalScope.launch {
-                mapsViewModel.addBookmarkFromPlace(placeInfo.place,placeInfo.image)
+        when (marker.tag){
+            is PlaceInfo -> {
+                val placeInfo = (marker.tag as PlaceInfo)
+                if (placeInfo.place != null && placeInfo.image != null) {
+                    GlobalScope.launch {
+                        mapsViewModel.addBookmarkFromPlace(placeInfo.place, placeInfo.image)
+                    }
+                }
+                marker.remove()
+            }
+            is MapsViewModel.BookmarkMarkerView->{
+                val bookmarkMarkerView=(marker.tag as
+                        MapsViewModel.BookmarkMarkerView)
+                marker.hideInfoWindow()
+                bookmarkMarkerView.id?.let{
+                    startBookmarkDetails(it)
+                }
             }
         }
-        marker.remove()
     }
 
     private fun createBookmarkMarkerObserver(){
@@ -194,6 +208,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             bookmark:MapsViewModel.BookmarkMarkerView):Marker?{
         val marker=map.addMarker(MarkerOptions()
             .position(bookmark.location)
+            .title(bookmark.name)
+            .snippet(bookmark.phone)
             .icon(BitmapDescriptorFactory.defaultMarker(
                 BitmapDescriptorFactory.HUE_AZURE))
             .alpha(0.8f))
@@ -230,8 +246,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     companion object{
+        const val EXTRA_BOOKMARK_ID="com.rayewenderlich.placebook.EXTRA_BOOKMARK_ID"
         private const val REQUEST_LOCATION = 1
         private const val TAG="MapsActivity"
+    }
+
+    private fun startBookmarkDetails(bookmarkId: Long){
+        val intent= Intent(this, BookmarkDetailsActivity::class.java)
+        intent.putExtra(EXTRA_BOOKMARK_ID, bookmarkId)
+        startActivity(intent)
     }
 
     class PlaceInfo(val place: Place?=null, val image: Bitmap?=null)
