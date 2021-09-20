@@ -5,8 +5,12 @@
       <map>
         <entry key="..\:/Users/ehewe/AndroidStudioProjects/Placebook/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2203125" />
         <entry key="..\:/Users/ehewe/AndroidStudioProjects/Placebook/app/src/main/res/layout/activity_bookmark_details.xml" value="0.1" />
+        <entry key="..\:/Users/ehewe/AndroidStudioProjects/Placebook/app/src/main/res/layout/bookmark_item.xml" value="0.1" />
         <entry key="..\:/Users/ehewe/AndroidStudioProjects/Placebook/app/src/main/res/layout/content_bookmark_info.xml" value="0.103125" />
+        <entry key="..\:/Users/ehewe/AndroidStudioProjects/Placebook/app/src/main/res/layout/drawer_view_maps.xml" value="0.1" />
+        <entry key="..\:/Users/ehewe/AndroidStudioProjects/Placebook/app/src/main/res/layout/main_view_maps.xml" value="0.1" />
         <entry key="..\:/Users/ehewe/AndroidStudioProjects/Placebook/app/src/main/res/menu/menu_bookmark_details.xml" value="0.1" />
+        <entry key="..\:/Users/ehewe/AndroidStudioProjects/Placebook/app/src/main/res/xml/file_paths.xml" value="0.1" />
       </map>
     </option>
   </component>
