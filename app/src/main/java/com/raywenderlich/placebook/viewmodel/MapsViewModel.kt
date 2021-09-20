@@ -31,6 +31,7 @@ class MapsViewModel(application: Application): AndroidViewModel(application){
         bookmark.latitude=place.latLng?.latitude?:0.0
         bookmark.phone=place.phoneNumber.toString()
         bookmark.address=place.address.toString()
+        bookmark.category=getPlaceCategory(place)
 
         val newId=bookmarkRepo.addBookmark(bookmark)
         image?.let{bookmark.setImage(it, getApplication())}
@@ -59,16 +60,40 @@ class MapsViewModel(application: Application): AndroidViewModel(application){
             bookmark.id,
             LatLng(bookmark.latitude, bookmark.longitude),
             bookmark.name,
-            bookmark.phone
-        )
+            bookmark.phone,
+            bookmarkRepo.getCategoryResourceId(bookmark.category))
+    }
+
+    private fun getPlaceCategory(place: Place): String{
+        var category = "Other"
+        val types = place.types
+
+        types?.let{placeTypes->
+
+            if (placeTypes.size>0){
+                val placeType = placeTypes[0]
+                category=bookmarkRepo.placeTypeToCategory(placeType)
+            }
+        }
+        return category
+    }
+
+    fun addBookmark(latLng: LatLng): Long? {
+        val bookmark = bookmarkRepo.createBookmark()
+        bookmark.name="Untitled"
+        bookmark.longitude=latLng.longitude
+        bookmark.latitude=latLng.latitude
+        bookmark.category="Other"
+        return bookmarkRepo.addBookmark(bookmark)
     }
 
     data class BookmarkView(
-        var id: Long?=null,
-        var location: LatLng = LatLng(0.0,0.0),
-        var name: String="",
-        var phone: String=""
-    ){
+        val id: Long?=null,
+        val location: LatLng = LatLng(0.0,0.0),
+        val name: String="",
+        val phone: String="",
+        val categoryResourceId: Int?=null){
+
         fun getImage(context: Context)=id?.let{
             ImageUtils.loadBitmapFromFile(context,
                 Bookmark.generateImageFilename(it))

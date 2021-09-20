@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.google.android.libraries.places.api.model.Place
+import com.raywenderlich.placebook.R
 import com.raywenderlich.placebook.model.Bookmark
 
-@Database(entities = arrayOf(Bookmark::class),version = 2)
+@Database(entities = arrayOf(Bookmark::class),version = 3)
 abstract class PlaceBookDatabase:RoomDatabase(){
 
     abstract fun bookmarkDao(): BookmarkDao
@@ -25,4 +27,7 @@ abstract class PlaceBookDatabase:RoomDatabase(){
             return instance as PlaceBookDatabase
         }
     }
+
+
+
 }
