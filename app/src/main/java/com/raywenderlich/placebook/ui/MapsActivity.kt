@@ -225,7 +225,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 it?.let{
                     displayAllBookmarks(it)
-                    displayAllBookmarks(it)
+                    bookmarkListAdapter.setBookmarkData(it)
                 }
             })
     }

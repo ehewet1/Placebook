@@ -85,6 +85,7 @@ class BookmarkDetailsActivity : AppCompatActivity(),
             bookmarkView.address=databinding.editTextAddress.text.toString()
             bookmarkView.phone=databinding.editTextPhone.text.toString()
             bookmarkView.category=databinding.spinnerCategory.selectedItem as String
+            bookmarkDetailsViewModel.updateBookmark(bookmarkView)
         }
         finish()
     }
